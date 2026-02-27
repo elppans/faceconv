@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# silent-sddm-customizer - Professional AUR maintainer helper
+# Copyright (c) 2026 Elppans
+# Licensed under the MIT License.
+# See LICENSE file for details.
+
 # Path to the metadata.desktop file
 FILE="/usr/share/sddm/themes/silent/metadata.desktop"
 

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# silent-sddm-customizer - Professional AUR maintainer helper
+# Copyright (c) 2026 Elppans
+# Licensed under the MIT License.
+# See LICENSE file for details.
+
 # Verifica se o script está sendo executado como root
 if [ "$EUID" -eq 0 ]; then
     echo "Erro: Este script não deve ser executado como superusuário (root)."

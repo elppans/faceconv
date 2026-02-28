@@ -68,5 +68,5 @@ post_upgrade() {
 # 	cat <<END
 # The "package" has been removed.
 # END
-}
+# }
 EOF

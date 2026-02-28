@@ -25,19 +25,20 @@ mapfile -t configs < <(grep -n "ConfigFile=" "$FILE")
 # Identifies the active line (without a # at the beginning)
 active_line=$(grep -n "^[[:space:]]*ConfigFile=" "$FILE" | cut -d: -f1)
 
-# Comment on the active line
+# 1. Comenta a linha ativa (adicionando o # no início real da linha)
 if [[ -n "$active_line" ]]; then
-    content=$(sed "${active_line}s/^/  #/" "$FILE")
-    echo "$content" > "$FILE"
+    # O 's/^/  #/' do seu script original estava adicionando espaços antes do #
+    # Vamos usar algo mais limpo:
+    sed "${active_line}s/^/#/" "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
     echo "$MSG_COMMENTED"
 fi
 
-# Randomly select another line
+# 2. Escolhe uma nova linha aleatória
 random_line=$(printf "%s\n" "${configs[@]}" | shuf -n 1 | cut -d: -f1)
 
-# Uncomment on the chosen line
-content=$(sed "${random_line}s/^#//" "$FILE")
-echo "$content" > "$FILE"
+# 3. Descomenta a linha escolhida (removendo o # e qualquer espaço ao redor dele)
+# O padrão 's/^[[:space:]]*#[[:space:]]*//' limpa tudo antes do ConfigFile
+sed "${random_line}s/^[[:space:]]*#[[:space:]]*//" "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
 
 # Displays final result
 echo "$MSG_CHANGED"

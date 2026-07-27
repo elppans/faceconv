@@ -2,7 +2,7 @@
 # shellcheck disable=all
 
 pkgname=faceconv
-pkgver=r7.2d15f87%
+pkgver=r7.2d15f87
 pkgrel=1
 arch=('any')
 license=('MIT')

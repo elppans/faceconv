@@ -5,22 +5,77 @@
 # Licensed under the MIT License.
 # See LICENSE file for details.
 
+show_help() {
+    cat << 'EOF'
+faceconv - Conversor de imagem para avatar do SDDM
+
+USO:
+    faceconv [OPÇÕES] <arquivo_imagem>
+
+DESCRIÇÃO:
+    Converte uma imagem em formato PNG 256x256 para uso como avatar
+    do SDDM (Simple Desktop Display Manager). A imagem é redimensionada,
+    centralizada e salva em ~/.face.icon com permissões adequadas.
+
+OPÇÕES:
+    <arquivo_imagem>    Caminho para a imagem de origem (JPG, PNG, etc)
+    -h, --help         Exibe esta mensagem de ajuda
+    -v, --version      Exibe a versão do script
+
+REQUISITOS:
+    - ImageMagick (comando 'magick' deve estar instalado)
+    - Permissão de execução no diretório home (será ajustada automaticamente)
+
+EXEMPLO:
+    $ faceconv ~/.config/face.jpg
+    Processando imagem para avatar...
+    Ajustando permissão da Home para o SDDM...
+    Finalizado! Avatar atualizado em /home/usuario/.face.icon.
+
+NOTAS:
+    - Não execute como root (sudo)
+    - A imagem será redimensionada para 256x256 pixels
+    - O resultado será salvo em ~/.face.icon
+    - As permissões da home serão ajustadas se necessário
+
+LICENÇA:
+    MIT License - veja LICENSE para detalhes
+
+EOF
+}
+
 # Verifica se o script está sendo executado como root
 if [ "$EUID" -eq 0 ]; then
     echo "Erro: Este script não deve ser executado como superusuário (root)."
     echo "Por favor, execute como um usuário normal."
-	echo "Se necessário, será pedido a senha administrativa!"
+    echo "Se necessário, será pedido a senha administrativa!"
     exit 1
 fi
+
+VERSAO="1.0"
+export VERSAO
+
+# Processa argumentos
+case "${1:-}" in
+    -h|--help)
+        show_help
+        exit 0
+        ;;
+    -v|--version)
+        echo "faceconv versão $VERSAO"
+        exit 0
+        ;;
+    "")
+        echo "Erro: arquivo de imagem não especificado"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac
 
 # Dependência: imagemagick
 if ! command -v magick &> /dev/null; then
     echo "Erro: 'imagemagick' não instalado."
-    exit 1
-fi
-
-if [ -z "$1" ]; then
-    echo "Uso: faceconv imagem.jpg"
     exit 1
 fi
 

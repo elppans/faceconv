@@ -50,9 +50,12 @@ package() {
 	for dir in "${dirs[@]}"; do
 		if [ -d "${srcdir}/${dir}" ]; then
 			cp -a "${srcdir}/${dir}" "${pkgdir}/"
-			echo "${pkgver}" | tee "${pkgdir}/etc/${pkgname}/${pkgname}.ver"
 		fi
 	done
+
+if [ -f "${pkgdir}/etc/${pkgname}/${pkgname}.ver" ]; then
+	echo "${pkgver}" | tee "${pkgdir}/etc/${pkgname}/${pkgname}.ver"
+fi
 
 	# Install license file if present
 	if [ -f "LICENSE" ]; then

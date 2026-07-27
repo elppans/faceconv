@@ -2,7 +2,7 @@
 # shellcheck disable=all
 
 pkgname=faceconv
-pkgver=r9.b1c1a77
+pkgver=r11.01c1e4a
 pkgrel=1
 arch=('any')
 license=('MIT')
@@ -16,7 +16,7 @@ provides=('faceconv')
 conflicts=('faceconv')
 pkgdesc="CLI tool and Nautilus extension to set account profile pictures"
 url="https://github.com/elppans/${pkgname}"
-source=("git+${url}.git#commit=b1c1a7712114e02810c95261eabd4276ca1fd155") # git rev-parse HEAD
+source=("git+${url}.git#commit=01c1e4a498e8601c5a68d90182999dc154034b9a") # git rev-parse HEAD
 sha256sums=('SKIP')
 
 # Automatically detect and use the correct install file

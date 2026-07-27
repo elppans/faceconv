@@ -26,10 +26,10 @@ elif [ -e "pkgbuild.install" ]; then
 	install=pkgbuild.install
 fi
 
-pkgver() {
-	cd "$srcdir/$_pkgname"
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+# pkgver() {
+# 	cd "$srcdir/$_pkgname"
+# 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+# }
 prepare() {
 	cd "${srcdir}/${pkgname}"
 	# Add any preparation steps here, if needed
@@ -50,6 +50,7 @@ package() {
 	for dir in "${dirs[@]}"; do
 		if [ -d "${srcdir}/${dir}" ]; then
 			cp -a "${srcdir}/${dir}" "${pkgdir}/"
+			echo "${pkgver}" | tee "${pkgdir}/etc/${pkgname}/${pkgname}.ver"
 		fi
 	done
 

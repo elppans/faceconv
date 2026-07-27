@@ -52,7 +52,7 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
-VERSAO="1.0"
+VERSAO="$(cat /etc/faceconv/faceconv.ver)"
 export VERSAO
 
 # Processa argumentos

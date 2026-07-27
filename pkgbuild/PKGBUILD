@@ -46,7 +46,7 @@ package() {
 	fi
 
 	# Install files
-	local dirs=("usr")
+	local dirs=("usr" "etc")
 	for dir in "${dirs[@]}"; do
 		if [ -d "${srcdir}/${dir}" ]; then
 			cp -a "${srcdir}/${dir}" "${pkgdir}/"

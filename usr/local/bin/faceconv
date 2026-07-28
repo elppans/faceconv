@@ -5,6 +5,14 @@
 # Licensed under the MIT License.
 # See LICENSE file for details.
 
+CONFIG_FILE="/etc/faceconv/faceconv.conf"
+
+if [ -f "$CONFIG_FILE" ]; then
+    # Importa as variáveis de forma segura se o formato for estritamente KEY=VALUE
+    # shellcheck disable=SC1090
+    . "$CONFIG_FILE"
+fi
+
 show_help() {
     cat << 'EOF'
 faceconv - Conversor de imagem para avatar do SDDM
@@ -52,9 +60,6 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
-VERSAO="$(cat /etc/faceconv/faceconv.ver)"
-export VERSAO
-
 # Processa argumentos
 case "${1:-}" in
     -h|--help)
@@ -62,7 +67,7 @@ case "${1:-}" in
         exit 0
         ;;
     -v|--version)
-        echo "faceconv versão $VERSAO"
+        echo "faceconv versão $VERSION"
         exit 0
         ;;
     "")

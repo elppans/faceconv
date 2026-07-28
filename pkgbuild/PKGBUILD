@@ -26,10 +26,10 @@ elif [ -e "pkgbuild.install" ]; then
 	install=pkgbuild.install
 fi
 
-# pkgver() {
-# 	cd "$srcdir/$_pkgname"
-# 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-# }
+pkgver() {
+	cd "$srcdir/$_pkgname"
+	printf "r%s.%s\n" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
 prepare() {
 	cd "${srcdir}/${pkgname}"
 	# Add any preparation steps here, if needed
@@ -53,9 +53,23 @@ package() {
 		fi
 	done
 
-if [ -f "${pkgdir}/etc/${pkgname}/${pkgname}.ver" ]; then
-	echo "${pkgver}" | tee "${pkgdir}/etc/${pkgname}/${pkgname}.ver"
-fi
+	# Define Version
+	CONFIG_FILE="${pkgdir}/etc/${pkgname}/${pkgname}.conf"
+
+	if [ -f "$CONFIG_FILE" ]; then
+		# 1. Se o arquivo estiver completamente vazio
+		if [ ! -s "$CONFIG_FILE" ]; then
+			echo "VERSION=\"${pkgver}\"" >"$CONFIG_FILE"
+
+		# 2. Se já contiver a variável VERSION (com ou sem aspas/espaços)
+		elif grep -qE '^[[:space:]]*VERSION=' "$CONFIG_FILE"; then
+			sed -i -E "s/^[[:space:]]*VERSION=.*/VERSION=\"${pkgver}\"/" "$CONFIG_FILE"
+
+		# 3. Se o arquivo não estiver vazio, mas a variável VERSION ainda não existir
+		else
+			echo "VERSION=\"${pkgver}\"" >>"$CONFIG_FILE"
+		fi
+	fi
 
 	# Install license file if present
 	if [ -f "LICENSE" ]; then

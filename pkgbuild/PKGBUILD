@@ -2,8 +2,9 @@
 # shellcheck disable=all
 
 pkgname=faceconv
-pkgver=r15.ff414b7
-pkgrel=1
+_pkgname="${pkgname}"
+pkgver=$(date +%y.%m.%d)
+pkgrel=$(date +%H%M)
 arch=('any')
 license=('MIT')
 depends=(
@@ -16,8 +17,10 @@ provides=('faceconv')
 conflicts=('faceconv')
 pkgdesc="CLI tool and Nautilus extension to set account profile pictures"
 url="https://github.com/elppans/${pkgname}"
-source=("git+${url}.git#commit=ff414b7559be082803e39c55f201a80f4aad149a") # git rev-parse HEAD
+# source=("git+${url}.git#commit=ff414b7559be082803e39c55f201a80f4aad149a") # git rev-parse HEAD
+source=("git+${url}.git#branch=main")
 sha256sums=('SKIP')
+md5sums=('SKIP')
 
 # Automatically detect and use the correct install file
 if [ -e "${pkgname}.install" ]; then
@@ -27,8 +30,8 @@ elif [ -e "pkgbuild.install" ]; then
 fi
 
 pkgver() {
-	cd "$srcdir/$_pkgname"
-	printf "r%s.%s\n" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+	cd "$srcdir/$_pkgname" || return 1
+	printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 prepare() {
 	cd "${srcdir}/${pkgname}"

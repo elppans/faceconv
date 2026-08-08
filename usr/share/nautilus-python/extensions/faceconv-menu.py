@@ -1,4 +1,12 @@
 import subprocess
+import gi
+
+# Descobrir versão mais recente do typelib instalado no sistema
+# ls /usr/lib/girepository-1.0/ | grep -iE 'notify|gtk'
+
+gi.require_version('Notify', '0.7')
+gi.require_version('Gtk', '3.0')  # já que o Nautilus 3.x usa GTK3
+
 from gi.repository import Nautilus, GObject, Notify, Gtk
 
 
